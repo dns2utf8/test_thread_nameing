@@ -5,7 +5,10 @@ use std::ffi::{CString, CStr, OsStr};
 use std::io::{self, Error};
 
 fn main() {
+    #[cfg(target_os = "macos")]
     let lalala = "la la la la la la la123456789012345678901234567890 la la la l63";
+    #[cfg(not(any(target_os = "windows", target_os = "macos")))]
+    let lalala = "123456789012345";
     println!("{:?}.len() = {}", lalala, lalala.len());
     let _original = getname().expect("getname default");
     setname(lalala).expect("setname");
@@ -41,6 +44,7 @@ fn getname() -> std::io::Result<String> {
 
 #[cfg(target_os = "macos")]
 fn setname(new: &str) -> io::Result<()> {
+    let new = CString::new(&new).expect("invalide str supplied");
     unsafe {
         let ret = pthread_setname_np(new.as_ptr() as *const i8);
         if ret == 0 {
@@ -56,14 +60,17 @@ fn setname(new: &str) -> io::Result<()> {
 
 }
 
-#[cfg(other)]
+/// This function will truncate the new name to to 15 Bytes on linux.
+#[cfg(not(any(target_os = "windows", target_os = "macos")))]
 fn setname(new: &str) -> io::Result<()> {
+    let new = CString::new(&new[0..15]).expect("invalide str supplied");
     unsafe {
         let my_id = pthread_self();
         let ret = pthread_setname_np(my_id, new.as_ptr() as *const i8);
         if ret == 0 {
             Ok(())
         } else {
+            println!("setname ret = {}", ret);
             Err(Error::last_os_error())
         }
     }
