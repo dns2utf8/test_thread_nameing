@@ -1,6 +1,9 @@
 # Rust needs at least Visual Studio 2013 Appveyor OS for MSVC targets.
 os: Visual Studio 2017
 
+# disable .net
+build: false
+
 environment:
   # When this was added there were revocation check failures when using the
   # libcurl backend as libcurl checks by default, but rustup doesn't provide the
