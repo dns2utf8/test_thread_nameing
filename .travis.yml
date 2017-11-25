@@ -1,0 +1,10 @@
+language: rust
+os:
+  - linux
+  - osx
+
+install:
+  - cd .. && git clone --branch pthread_setnam https://github.com/dns2utf8/libc.git
+
+script:
+  - cargo run
