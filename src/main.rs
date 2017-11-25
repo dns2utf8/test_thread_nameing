@@ -6,7 +6,7 @@ use std::io::{self, Error};
 
 fn main() {
     #[cfg(target_os = "macos")]
-    let lalala = "la la la la la la la123456789012345678901234567890 la la la l63_";
+    let lalala = "la la la la la la la123456789012345678901234567890 la la la l63";
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
     let lalala = "123456789012345";
     println!("{:?}.len() = {}", lalala, lalala.len());
@@ -42,6 +42,7 @@ fn getname() -> std::io::Result<String> {
     }
 }
 
+/// This function will truncate the new name to 63 Bytes on mac os x
 #[cfg(target_os = "macos")]
 fn setname(new: &str) -> io::Result<()> {
     let new = CString::new(&new[0..63]).expect("invalide str supplied");
