@@ -22,4 +22,4 @@ install:
   - cargo -V
 
 test_script:
-  - cargo run
+  - cargo run --target %TARGET%
