@@ -9,13 +9,13 @@ fn main() {
     println!("{:?}.len() = {}", lalala, lalala.len());
     let _original = getname().expect("getname default");
     setname(lalala).expect("setname");
-    
+
     let new = getname().expect("getname changed");
     assert_eq!(lalala, new);
 
-unsafe {
-    libc::getchar();
-}
+    /*unsafe {
+        libc::getchar();
+    }*/
 }
 
 fn getname() -> std::io::Result<String> {
@@ -25,8 +25,9 @@ fn getname() -> std::io::Result<String> {
         let ret = pthread_getname_np(my_id, name.as_mut_ptr(), name.len());
 
         let name = CStr::from_ptr(name.as_ptr())
-                    .to_string_lossy()
-                    .to_owned().into_owned();
+            .to_string_lossy()
+            .to_owned()
+            .into_owned();
 
         println!("{} => {:?}", ret, name);
 
@@ -38,11 +39,30 @@ fn getname() -> std::io::Result<String> {
     }
 }
 
+#[cfg(target_os = "macos")]
 fn setname(new: &str) -> io::Result<()> {
     unsafe {
         let ret = pthread_setname_np(new.as_ptr() as *const i8);
         if ret == 0 {
-            Ok( () )
+            Ok(())
+        } else {
+            Err(Error::last_os_error())
+        }
+    }
+}
+
+#[cfg(target_os = "windows")]
+fn setname(new: &str) -> io::Result<()> {
+
+}
+
+#[cfg(other)]
+fn setname(new: &str) -> io::Result<()> {
+    unsafe {
+        let my_id = pthread_self();
+        let ret = pthread_setname_np(my_id, new.as_ptr() as *const i8);
+        if ret == 0 {
+            Ok(())
         } else {
             Err(Error::last_os_error())
         }
