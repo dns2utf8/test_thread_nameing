@@ -44,7 +44,7 @@ fn getname() -> std::io::Result<String> {
 
 #[cfg(target_os = "macos")]
 fn setname(new: &str) -> io::Result<()> {
-    let new = CString::new(new).expect("invalide str supplied");
+    let new = CString::new(&new[0..63]).expect("invalide str supplied");
     unsafe {
         let ret = pthread_setname_np(new.as_ptr() as *const i8);
         if ret == 0 {
