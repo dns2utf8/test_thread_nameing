@@ -6,7 +6,7 @@ use std::io::{self, Error};
 
 fn main() {
     #[cfg(target_os = "macos")]
-    let lalala = "la la la la la la la123456789012345678901234567890 la la la l63";
+    let lalala = "la la la la la la la123456789012345678901234567890 la la la l63_";
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
     let lalala = "123456789012345";
     println!("{:?}.len() = {}", lalala, lalala.len());
