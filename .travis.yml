@@ -4,7 +4,10 @@ os:
   - osx
 
 install:
-  - cd .. && git clone --branch pthread_setname https://github.com/dns2utf8/libc.git
+  - echo $(pwd)
+  - cd ..
+  - git clone --branch pthread_setname https://github.com/dns2utf8/libc.git
+  - cd test_thread_nameing
 
 script:
   - cargo run
