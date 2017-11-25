@@ -23,6 +23,7 @@ install:
   - if defined MSYS2_BITS set PATH=%PATH%;C:\msys64\mingw%MSYS2_BITS%\bin
   - rustc -V
   - cargo -V
+  - git clone --branch pthread_setname https://github.com/dns2utf8/libc.git ../libc
 
 test_script:
   - cargo run --target %TARGET%
