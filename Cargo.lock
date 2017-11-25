@@ -1,0 +1,11 @@
+[[package]]
+name = "libc"
+version = "0.2.33"
+
+[[package]]
+name = "test_thread_nameing"
+version = "0.1.0"
+dependencies = [
+ "libc 0.2.33",
+]
+

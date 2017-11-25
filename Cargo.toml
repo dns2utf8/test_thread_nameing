@@ -1,0 +1,7 @@
+[package]
+name = "test_thread_nameing"
+version = "0.1.0"
+authors = ["user"]
+
+[dependencies]
+libc = { path="../libc" }
